@@ -1,3 +1,6 @@
+### Diagrama entidad relacion de la DB
+   ![](DERWacdonalds.png)
+
 #### Script
 
 ```sql
