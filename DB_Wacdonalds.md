@@ -1,9 +1,15 @@
 #### Script
 
 ```sql
--- Creación de la base de datos
-CREATE DATABASE IF NOT EXISTS WacDonalds;
-USE WacDonalds;
+USE master;
+GO
+    
+CREATE DATABASE WacDonaldsDB;
+GO
+
+USE WacDonaldsDB;
+GO
+
 
 -- Tabla Usuario
 CREATE TABLE IF NOT EXISTS Usuario (
@@ -13,6 +19,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     contraseña VARCHAR(255) NOT NULL,
     teléfono VARCHAR(20)
 );
+GO
 
 -- Tabla Administrador
 CREATE TABLE IF NOT EXISTS Administrador (
@@ -22,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Administrador (
     contraseña VARCHAR(255) NOT NULL,
     teléfono VARCHAR(20)
 );
-
+GO
 -- Tabla Sucursal
 CREATE TABLE IF NOT EXISTS Sucursal (
     id_sucursal INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,6 +41,7 @@ CREATE TABLE IF NOT EXISTS Sucursal (
     id_administrador INT,
     FOREIGN KEY (id_administrador) REFERENCES Administrador(id_administrador)
 );
+GO
 
 -- Tabla Producto
 CREATE TABLE IF NOT EXISTS Producto (
@@ -45,6 +53,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     stock INT NOT NULL DEFAULT 0,
     FOREIGN KEY (id_sucursal) REFERENCES Sucursal(id_sucursal)
 );
+GO
 
 -- Tabla Orden
 CREATE TABLE IF NOT EXISTS Orden (
@@ -56,6 +65,7 @@ CREATE TABLE IF NOT EXISTS Orden (
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
     FOREIGN KEY (id_sucursal) REFERENCES Sucursal(id_sucursal)
 );
+GO
 
 -- Tabla Detalle_Orden
 CREATE TABLE IF NOT EXISTS Detalle_Orden (
@@ -67,6 +77,7 @@ CREATE TABLE IF NOT EXISTS Detalle_Orden (
     FOREIGN KEY (id_orden) REFERENCES Orden(id_orden),
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
 );
+GO
 
 -- Tabla Metodo_Pago
 CREATE TABLE IF NOT EXISTS Metodo_Pago (
@@ -74,6 +85,7 @@ CREATE TABLE IF NOT EXISTS Metodo_Pago (
     tipo VARCHAR(50) NOT NULL,
     detalles TEXT
 );
+GO
 
 -- Tabla Pago
 CREATE TABLE IF NOT EXISTS Pago (
@@ -85,3 +97,4 @@ CREATE TABLE IF NOT EXISTS Pago (
     CONSTRAINT fk_pago_orden FOREIGN KEY (id_orden) REFERENCES Orden(id_orden) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_pago_metodo FOREIGN KEY (id_metodo_pago) REFERENCES Metodo_Pago(id_metodo_pago) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+GO
