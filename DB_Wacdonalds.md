@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     id_sucursal INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
+    imagen_url VARCHAR(255),
     descripción TEXT,
     precio DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
