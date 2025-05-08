@@ -9,14 +9,12 @@ GO
     
 CREATE DATABASE WacDonaldsDB;
 GO
-
 USE WacDonaldsDB;
 GO
 
-
 -- Tabla Usuario
-CREATE TABLE IF NOT EXISTS Usuario (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Usuario (
+    id_usuario INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
     contraseña VARCHAR(255) NOT NULL,
@@ -25,17 +23,18 @@ CREATE TABLE IF NOT EXISTS Usuario (
 GO
 
 -- Tabla Administrador
-CREATE TABLE IF NOT EXISTS Administrador (
-    id_administrador INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Administrador (
+    id_administrador INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
     contraseña VARCHAR(255) NOT NULL,
     teléfono VARCHAR(20)
 );
 GO
+
 -- Tabla Sucursal
-CREATE TABLE IF NOT EXISTS Sucursal (
-    id_sucursal INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Sucursal (
+    id_sucursal INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     dirección TEXT NOT NULL,
     teléfono VARCHAR(20),
@@ -47,8 +46,8 @@ CREATE TABLE IF NOT EXISTS Sucursal (
 GO
 
 -- Tabla Producto
-CREATE TABLE IF NOT EXISTS Producto (
-    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Producto (
+    id_producto INT IDENTITY(1,1) PRIMARY KEY,
     id_sucursal INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     imagen_url VARCHAR(255),
@@ -60,11 +59,11 @@ CREATE TABLE IF NOT EXISTS Producto (
 GO
 
 -- Tabla Orden
-CREATE TABLE IF NOT EXISTS Orden (
-    id_orden INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Orden (
+    id_orden INT IDENTITY(1,1) PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_sucursal INT NOT NULL,
-    fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha DATETIME NOT NULL DEFAULT GETDATE(),
     estado VARCHAR(50) NOT NULL DEFAULT 'Pendiente',
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
     FOREIGN KEY (id_sucursal) REFERENCES Sucursal(id_sucursal)
@@ -72,8 +71,8 @@ CREATE TABLE IF NOT EXISTS Orden (
 GO
 
 -- Tabla Detalle_Orden
-CREATE TABLE IF NOT EXISTS Detalle_Orden (
-    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Detalle_Orden (
+    id_detalle INT IDENTITY(1,1) PRIMARY KEY,
     id_orden INT NOT NULL,
     id_producto INT NOT NULL,
     cantidad INT NOT NULL,
@@ -84,21 +83,21 @@ CREATE TABLE IF NOT EXISTS Detalle_Orden (
 GO
 
 -- Tabla Metodo_Pago
-CREATE TABLE IF NOT EXISTS Metodo_Pago (
-    id_metodo_pago INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Metodo_Pago (
+    id_metodo_pago INT IDENTITY(1,1) PRIMARY KEY,
     tipo VARCHAR(50) NOT NULL,
     detalles TEXT
 );
 GO
 
 -- Tabla Pago
-CREATE TABLE IF NOT EXISTS Pago (
-    id_pago INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Pago (
+    id_pago INT IDENTITY(1,1) PRIMARY KEY,
     id_orden INT NOT NULL,
     id_metodo_pago INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
-    fecha_pago DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_pago DATETIME NOT NULL DEFAULT GETDATE(),
     CONSTRAINT fk_pago_orden FOREIGN KEY (id_orden) REFERENCES Orden(id_orden) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_pago_metodo FOREIGN KEY (id_metodo_pago) REFERENCES Metodo_Pago(id_metodo_pago) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_pago_metodo FOREIGN KEY (id_metodo_pago) REFERENCES Metodo_Pago(id_metodo_pago) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 GO
